@@ -46,8 +46,8 @@ def start(message):
 def callback(call):
     bot.answer_callback_query(call.id, "Анализирую...")
     result = get_signal(call.data)
-    bot.send_message(call.chat.id, result, parse_mode="Markdown")
-
+    # Исправляем здесь: обращаемся через call.message
+    bot.send_message(call.message.chat.id, result, parse_mode="Markdown")
 # Запуск
 try:
     bot.delete_webhook(drop_pending_updates=True)
