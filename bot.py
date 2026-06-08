@@ -51,4 +51,4 @@ def scanner():
         time.sleep(60)
 
 threading.Thread(target=scanner, daemon=True).start()
-bot.infinity_polling()
+bot.infinity_polling(drop_pending_updates=True)
