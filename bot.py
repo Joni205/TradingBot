@@ -7,15 +7,30 @@ import os
 TOKEN = os.getenv("BOT_TOKEN")
 bot = telebot.TeleBot(TOKEN)
 
-# Функция расчёта уровней (из 2.2)
 def get_signal(ticker):
     try:
-        data = yf.download(tickers=ticker, period="5d", interval="1m", progress=False)
-        if data.empty or len(data) < 200: return "Ошибка: данных мало."
+        # Берем данных побольше (например, за месяц), но на 15-минутном таймфрейме
+        # Это даст нам стабильные 200+ свечей даже при плохом интернете
+        data = yf.download(tickers=ticker, period="1mo", interval="15m", progress=False)
         
-        curr_price = data['Close'].iloc[-1]
-        sma200 = data['Close'].rolling(window=200).mean().iloc[-1]
+        # Если данных всё равно нет (например, тикер не найден)
+        if data.empty or len(data) < 200: 
+            return f"❌ Нет данных для {ticker}. Попробуй позже."
         
+        # Безопасно извлекаем значения
+        # .item() превращает значение из таблицы в обычное число Python
+        curr_price = float(data['Close'].iloc[-1].item())
+        
+        # Рассчитываем SMA только если есть достаточно данных
+        sma200 = float(data['Close'].rolling(window=200).mean().iloc[-1].item())
+        
+        # Расчет уровней Pivot
+        prev = data.iloc[-2]
+        pivot = (float(prev['High'].item()) + float(prev['Low'].item()) + float(prev['Close'].item())) / 3
+        s1 = (pivot * 2) - float(prev['High'].item())
+        r1 = (pivot * 2) - float(prev['Low'].item())
+
+        # ... (дальше твой код сравнения)
         # Расчет уровней Pivot
         prev = data.iloc[-2]
         pivot = (prev['High'] + prev['Low'] + prev['Close']) / 3
