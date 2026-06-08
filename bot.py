@@ -9,13 +9,33 @@ bot = telebot.TeleBot(TOKEN)
 
 def get_signal(ticker):
     try:
-        # Берем данных побольше (например, за месяц), но на 15-минутном таймфрейме
-        # Это даст нам стабильные 200+ свечей даже при плохом интернете
+        # Используем 15-минутный интервал для стабильности
         data = yf.download(tickers=ticker, period="1mo", interval="15m", progress=False)
         
-        # Если данных всё равно нет (например, тикер не найден)
-        if data.empty or len(data) < 200: 
-            return f"❌ Нет данных для {ticker}. Попробуй позже."
+        if data.empty or len(data) < 200:
+            return "❌ Недостаточно данных."
+
+        # Превращаем данные в числа с помощью .iloc[-1] и .item()
+        # .iloc[-1] берет последнюю строку, а .item() вытаскивает само число
+        curr_price = float(data['Close'].iloc[-1].item())
+        sma200 = float(data['Close'].rolling(window=200).mean().iloc[-1].item())
+        
+        # Расчет уровней (также вытаскиваем числа)
+        prev = data.iloc[-2]
+        pivot = (float(prev['High'].item()) + float(prev['Low'].item()) + float(prev['Close'].item())) / 3
+        s1 = (pivot * 2) - float(prev['High'].item())
+        r1 = (pivot * 2) - float(prev['Low'].item())
+        
+        # Теперь это обычные числа, и сравнения будут работать идеально
+        if curr_price > sma200 and abs(curr_price - s1) < (curr_price * 0.0005):
+            return f"🟢 CALL: {ticker} (Цена: {curr_price:.5f})"
+        if curr_price < sma200 and abs(curr_price - r1) < (curr_price * 0.0005):
+            return f"🔴 PUT: {ticker} (Цена: {curr_price:.5f})"
+            
+        return f"💤 Нет сигнала: {ticker} ({curr_price:.5f})"
+        
+    except Exception as e:
+        return f"Ошибка: {str(e)}"
         
         # Безопасно извлекаем значения
         # .item() превращает значение из таблицы в обычное число Python
