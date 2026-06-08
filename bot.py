@@ -9,8 +9,9 @@ bot = telebot.TeleBot(TOKEN)
 
 def get_signal(ticker):
     try:
-        # Используем 15-минутный интервал для стабильности
-        data = yf.download(tickers=ticker, period="1mo", interval="15m", progress=False)
+       data = yf.download(ticker, period="1mo", interval="15m", progress=False, 
+                   threads=True, 
+                   headers={'User-Agent': 'Mozilla/5.0'})
         
         if data.empty or len(data) < 200:
             return "❌ Недостаточно данных."
