@@ -9,34 +9,39 @@ bot = telebot.TeleBot(TOKEN)
 
 def get_signal(ticker):
     try:
-       data = yf.download(ticker, period="1mo", interval="15m", progress=False, 
-                   threads=True, 
-                   headers={'User-Agent': 'Mozilla/5.0'})
+        # Используем 15-минутный интервал для стабильности данных
+        data = yf.download(tickers=ticker, period="1mo", interval="15m", progress=False)
         
+        # Проверка на пустые данные
         if data.empty or len(data) < 200:
-            return "❌ Недостаточно данных."
-
-        # Превращаем данные в числа с помощью .iloc[-1] и .item()
-        # .iloc[-1] берет последнюю строку, а .item() вытаскивает само число
+            return "❌ Недостаточно данных для анализа."
+        
+        # Безопасное извлечение цен как чисел (float)
+        # .item() вытаскивает значение из контейнера pandas
         curr_price = float(data['Close'].iloc[-1].item())
         sma200 = float(data['Close'].rolling(window=200).mean().iloc[-1].item())
         
-        # Расчет уровней (также вытаскиваем числа)
+        # Расчет уровней Pivot
         prev = data.iloc[-2]
-        pivot = (float(prev['High'].item()) + float(prev['Low'].item()) + float(prev['Close'].item())) / 3
-        s1 = (pivot * 2) - float(prev['High'].item())
-        r1 = (pivot * 2) - float(prev['Low'].item())
+        h = float(prev['High'].item())
+        l = float(prev['Low'].item())
+        c = float(prev['Close'].item())
         
-        # Теперь это обычные числа, и сравнения будут работать идеально
+        pivot = (h + l + c) / 3
+        s1 = (pivot * 2) - h
+        r1 = (pivot * 2) - l
+        
+        # Проверка условий сигнала
         if curr_price > sma200 and abs(curr_price - s1) < (curr_price * 0.0005):
-            return f"🟢 CALL: {ticker} (Цена: {curr_price:.5f})"
+            return f"🟢 *CALL* | {ticker.replace('=X', '')}\nЦена: {curr_price:.5f}\nS1: {s1:.5f}"
+        
         if curr_price < sma200 and abs(curr_price - r1) < (curr_price * 0.0005):
-            return f"🔴 PUT: {ticker} (Цена: {curr_price:.5f})"
+            return f"🔴 *PUT* | {ticker.replace('=X', '')}\nЦена: {curr_price:.5f}\nR1: {r1:.5f}"
             
-        return f"💤 Нет сигнала: {ticker} ({curr_price:.5f})"
+        return f"💤 *Нет сигнала* | {ticker.replace('=X', '')}: {curr_price:.5f}"
         
     except Exception as e:
-        return f"Ошибка: {str(e)}"
+        return f"Ошибка запроса: {str(e)}"
         
         # Безопасно извлекаем значения
         # .item() превращает значение из таблицы в обычное число Python
