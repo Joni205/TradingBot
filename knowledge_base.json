@@ -1,0 +1,27 @@
+[
+  {"sig_type": "CALL", "rsi": 32.5, "macd": 0.00015, "vol_ratio": 1.20, "result": 1},
+  {"sig_type": "CALL", "rsi": 45.0, "macd": 0.00005, "vol_ratio": 1.10, "result": 1},
+  {"sig_type": "CALL", "rsi": 48.5, "macd": 0.00008, "vol_ratio": 1.40, "result": 1},
+  {"sig_type": "CALL", "rsi": 39.0, "macd": 0.00002, "vol_ratio": 1.06, "result": 1},
+  {"sig_type": "CALL", "rsi": 35.0, "macd": -0.00001, "vol_ratio": 1.15, "result": 1},
+  {"sig_type": "CALL", "rsi": 55.0, "macd": 0.00010, "vol_ratio": 1.50, "result": 1},
+  {"sig_type": "CALL", "rsi": 30.0, "macd": -0.00005, "vol_ratio": 0.80, "result": 0},
+  {"sig_type": "CALL", "rsi": 42.0, "macd": -0.00008, "vol_ratio": 0.95, "result": 0},
+  {"sig_type": "CALL", "rsi": 28.0, "macd": 0.00012, "vol_ratio": 0.70, "result": 0},
+  {"sig_type": "CALL", "rsi": 60.0, "macd": 0.00001, "vol_ratio": 1.05, "result": 0},
+  {"sig_type": "CALL", "rsi": 34.0, "macd": 0.00005, "vol_ratio": 0.90, "result": 0},
+  {"sig_type": "CALL", "rsi": 50.0, "macd": -0.00002, "vol_ratio": 1.00, "result": 0},
+
+  {"sig_type": "PUT", "rsi": 68.5, "macd": -0.00015, "vol_ratio": 1.25, "result": 1},
+  {"sig_type": "PUT", "rsi": 55.0, "macd": -0.00005, "vol_ratio": 1.12, "result": 1},
+  {"sig_type": "PUT", "rsi": 52.0, "macd": -0.00008, "vol_ratio": 1.35, "result": 1},
+  {"sig_type": "PUT", "rsi": 62.0, "macd": -0.00002, "vol_ratio": 1.08, "result": 1},
+  {"sig_type": "PUT", "rsi": 65.0, "macd": 0.00001, "vol_ratio": 1.18, "result": 1},
+  {"sig_type": "PUT", "rsi": 45.0, "macd": -0.00010, "vol_ratio": 1.60, "result": 1},
+  {"sig_type": "PUT", "rsi": 70.0, "macd": 0.00005, "vol_ratio": 0.85, "result": 0},
+  {"sig_type": "PUT", "rsi": 58.0, "macd": 0.00008, "vol_ratio": 0.92, "result": 0},
+  {"sig_type": "PUT", "rsi": 75.0, "macd": -0.00012, "vol_ratio": 0.75, "result": 0},
+  {"sig_type": "PUT", "rsi": 40.0, "macd": -0.00001, "vol_ratio": 1.02, "result": 0},
+  {"sig_type": "PUT", "rsi": 66.0, "macd": -0.00005, "vol_ratio": 0.88, "result": 0},
+  {"sig_type": "PUT", "rsi": 50.0, "macd": 0.00002, "vol_ratio": 1.01, "result": 0}
+]
