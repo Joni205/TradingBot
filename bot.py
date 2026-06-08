@@ -51,4 +51,11 @@ def scanner():
         time.sleep(60)
 
 threading.Thread(target=scanner, daemon=True).start()
-bot.infinity_polling(drop_pending_updates=True)
+# Перед запуском очищаем все зависшие обновления в Telegram
+try:
+    bot.delete_webhook(drop_pending_updates=True)
+except:
+    pass
+
+# Запускаем бесконечный опрос
+bot.infinity_polling()
